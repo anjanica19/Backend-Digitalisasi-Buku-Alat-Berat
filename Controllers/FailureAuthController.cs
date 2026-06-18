@@ -3,8 +3,6 @@ using Microsoft.Data.SqlClient;
 using astratech_apps_backend.DTOs;
 using astratech_apps_backend.Helpers;
 using System.Data;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace astratech_apps_backend.Controllers
 {
@@ -85,11 +83,12 @@ namespace astratech_apps_backend.Controllers
 
             try
             {
-                string hashedPassword = HashString(req.Password);
-                // Jawaban di-lowercase dan di-trim sebelum di-hash agar tidak case-sensitive
-                string a1Hash = HashString(req.A1.Trim().ToLower());
-                string a2Hash = HashString(req.A2.Trim().ToLower());
-                string a3Hash = HashString(req.A3.Trim().ToLower());
+                // Password disimpan plaintext
+                string hashedPassword = req.Password;
+                // Jawaban tetap di-lowercase dan di-trim agar tidak case-sensitive
+                string a1Hash = req.A1.Trim().ToLower();
+                string a2Hash = req.A2.Trim().ToLower();
+                string a3Hash = req.A3.Trim().ToLower();
 
                 using SqlConnection conn = new SqlConnection(_connectionString);
                 SqlCommand cmd = new SqlCommand("sp_RegisterUser", conn);
@@ -137,7 +136,8 @@ namespace astratech_apps_backend.Controllers
 
             try
             {
-                string hashedPassword = HashString(req.Password);
+                // Password plaintext langsung dibandingkan
+                string hashedPassword = req.Password;
 
                 using SqlConnection conn = new SqlConnection(_connectionString);
                 SqlCommand cmd = new SqlCommand("sp_LoginUser", conn);
@@ -240,11 +240,11 @@ namespace astratech_apps_backend.Controllers
 
             try
             {
-                // Hash jawaban dengan cara yang sama saat register
-                string a1Hash = HashString(req.A1.Trim().ToLower());
-                string a2Hash = HashString(req.A2.Trim().ToLower());
-                string a3Hash = HashString(req.A3.Trim().ToLower());
-                string newPassHash = HashString(req.NewPassword);
+                // Jawaban di-lowercase untuk case-insensitive, password plaintext
+                string a1Hash = req.A1.Trim().ToLower();
+                string a2Hash = req.A2.Trim().ToLower();
+                string a3Hash = req.A3.Trim().ToLower();
+                string newPassHash = req.NewPassword;
 
                 using SqlConnection conn = new SqlConnection(_connectionString);
                 SqlCommand cmd = new SqlCommand("sp_VerifyAndResetPassword", conn);
@@ -276,14 +276,5 @@ namespace astratech_apps_backend.Controllers
             }
         }
 
-        // ════════════════════════════════════════════════════════════
-        // HELPERS
-        // ════════════════════════════════════════════════════════════
-        private static string HashString(string input)
-        {
-            using SHA256 sha = SHA256.Create();
-            byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
-            return string.Concat(bytes.Select(b => b.ToString("x2")));
-        }
     }
 }
