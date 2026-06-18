@@ -1,6 +1,7 @@
 using astratech_apps_backend.DTOs;
 using astratech_apps_backend.Models;
-using astratech_apps_backend.Repositories;
+using astratech_apps_backend.Repositories.Implementations;
+using astratech_apps_backend.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
