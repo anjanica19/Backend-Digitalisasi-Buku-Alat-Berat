@@ -1,5 +1,6 @@
 using astratech_apps_backend.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using astratech_apps_backend.DTOs;
 
 namespace astratech_apps_backend.Controllers
 {
@@ -62,6 +63,30 @@ namespace astratech_apps_backend.Controllers
             {
                 return StatusCode(500, new
                 {
+                    message = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("save")]
+        public async Task<IActionResult> SaveDiagnosisHistory(
+            [FromBody] SaveDiagnosisHistoryDto request)
+        {
+            try
+            {
+                await _historyRepository.SaveDiagnosisHistoryAsync(request);
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "SUCCESS"
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
                     message = ex.Message
                 });
             }

@@ -1,4 +1,13 @@
 namespace astratech_apps_backend.DTOs {
+    public class SaveDiagnosisHistoryDto
+    {
+        public string DiagnosisType { get; set; } = string.Empty;
+        public int? FailureCodeId { get; set; }
+        public int? TroubleshootingCaseId { get; set; }
+        public string UserNim { get; set; } = string.Empty;
+        public string? DiagnosisTitle { get; set; }
+    }
+
     public class HistorySummaryDto
     {
         public int IdHistory { get; set; }

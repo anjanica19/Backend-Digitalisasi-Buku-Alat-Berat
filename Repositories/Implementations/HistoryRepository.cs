@@ -80,7 +80,29 @@ namespace astratech_apps_backend.Repositories.Implementations
         }
         return results;
         }
+        #endregion
 
+        #region === SAVE DIAGNOSIS HISTORY ===
+
+        public async Task SaveDiagnosisHistoryAsync(SaveDiagnosisHistoryDto dto)
+        {
+            await using var conn = new SqlConnection(_connectionString);
+
+            await using var cmd = new SqlCommand("dbo.sp_SaveDiagnosisHistory", conn);
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@diagnosis_type", dto.DiagnosisType);
+            cmd.Parameters.AddWithValue("@failure_code_id", (object?)dto.FailureCodeId ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@troubleshooting_case_id", (object?)dto.TroubleshootingCaseId ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@user_nim", dto.UserNim);
+            cmd.Parameters.AddWithValue("@diagnosis_title", dto.DiagnosisTitle);
+
+            await conn.OpenAsync();
+
+            await cmd.ExecuteNonQueryAsync();
+
+        }
         #endregion
     }
 }
