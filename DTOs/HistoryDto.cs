@@ -1,4 +1,5 @@
 namespace astratech_apps_backend.DTOs {
+    //
     public class SaveDiagnosisHistoryDto
     {
         public string DiagnosisType { get; set; } = string.Empty;

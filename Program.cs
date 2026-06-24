@@ -76,7 +76,7 @@ builder.Services.AddScoped<IFailureDiagnosisService, FailureDiagnosisService>();
 builder.Services.AddSingleton<JwtHelper>();
 builder.Services.AddScoped<IHistoryRepository, HistoryRepository>();
 
-// CORS
+// CORS ===
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>

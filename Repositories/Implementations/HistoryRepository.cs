@@ -50,7 +50,7 @@ namespace astratech_apps_backend.Repositories.Implementations
 
         #endregion
 
-        #region === GET history detail ===
+        #region === GET history detail ======
         public async Task<IEnumerable<HistoryDetailDto>> GetHistoryDetailAsync(string diagnosisType, int idItem)
         {
           var results = new List<HistoryDetailDto>();
