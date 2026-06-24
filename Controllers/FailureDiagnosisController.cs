@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Data;
-using astractech_backend.DTOs; // Menggunakan namespace DTO sesuai permintaan
+using astractech_backend.DTOs; 
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System;
@@ -64,36 +64,36 @@ namespace astratech_apps_backend.Controllers
         }
 
         // --- Simpan atau Update Riwayat ---
-        [HttpPost("history/save")]
-        public IActionResult SaveHistory([FromBody] FailureSaveHistoryRequest req)
-        {
-            try {
-                using (SqlConnection conn = new SqlConnection(_connectionString))
-                {
-                    SqlCommand cmd = new SqlCommand("sp_SaveDiagnosisHistory", conn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@failure_code", req.FailureCode);
-                    cmd.Parameters.AddWithValue("@user_nim", req.UserNim);
-                    cmd.Parameters.AddWithValue("@diagnosis_title", req.DiagnosisTitle ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@total_steps", req.TotalSteps);
-                    cmd.Parameters.AddWithValue("@solution_text", req.SolutionText ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@notes", req.Notes ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@session_id", req.SessionId ?? (object)DBNull.Value);
+        // [HttpPost("history/save")]
+        // public IActionResult SaveHistory([FromBody] FailureSaveHistoryRequest req)
+        // {
+        //     try {
+        //         using (SqlConnection conn = new SqlConnection(_connectionString))
+        //         {
+        //             SqlCommand cmd = new SqlCommand("sp_SaveDiagnosisHistory", conn);
+        //             cmd.CommandType = CommandType.StoredProcedure;
+        //             cmd.Parameters.AddWithValue("@failure_code", req.FailureCode);
+        //             cmd.Parameters.AddWithValue("@user_nim", req.UserNim);
+        //             cmd.Parameters.AddWithValue("@diagnosis_title", req.DiagnosisTitle ?? (object)DBNull.Value);
+        //             cmd.Parameters.AddWithValue("@total_steps", req.TotalSteps);
+        //             cmd.Parameters.AddWithValue("@solution_text", req.SolutionText ?? (object)DBNull.Value);
+        //             cmd.Parameters.AddWithValue("@notes", req.Notes ?? (object)DBNull.Value);
+        //             cmd.Parameters.AddWithValue("@session_id", req.SessionId ?? (object)DBNull.Value);
 
-                    conn.Open();
-                    // Menggunakan ExecuteScalar karena SP mengembalikan SELECT session_id
-                    var result = cmd.ExecuteScalar();
-                    string returnSessionId = result?.ToString() ?? "";
+        //             conn.Open();
+        //             // Menggunakan ExecuteScalar karena SP mengembalikan SELECT session_id
+        //             var result = cmd.ExecuteScalar();
+        //             string returnSessionId = result?.ToString() ?? "";
                     
-                    return Ok(new { message = "Success", session_id = returnSessionId });
-                }
-            }
-            catch (Exception ex) {
-                return BadRequest(new { message = ex.Message });
-            }
-        }
+        //             return Ok(new { message = "Success", session_id = returnSessionId });
+        //         }
+        //     }
+        //     catch (Exception ex) {
+        //         return BadRequest(new { message = ex.Message });
+        //     }
+        // }
 
-        // --- Hapus Riwayat ---
+        // // --- Hapus Riwayat ---
         [HttpDelete("history/{sessionId}")]
         public IActionResult DeleteHistory(string sessionId)
         {
